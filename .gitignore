@@ -1,2 +1,8 @@
+# ----- Backend -----
+
+# Ignorar archivos de compilación del IDE
 backend/.idea
+# Ignorar archivos de compilación de Python
 backend/__pycache__
+# Ignorar archivos que contiene variables de entorno sensibles
+backend/.env
