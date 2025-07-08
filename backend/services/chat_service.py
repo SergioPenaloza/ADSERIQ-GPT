@@ -1,3 +1,5 @@
+import json
+
 from clients.openai_client import client
 
 class Chatservice:
@@ -9,10 +11,20 @@ class Chatservice:
                 {"role": "developer", "content": "Te llamas Nina, eres una asistente de la empesa AdserIQ, presentate como tal"},
                 {"role": "user", "content": "Hola, como estas"}
             ],
-            stream= False
+            stream= True
         )
-        """
+
+        respuesta = ""
         for chunk in completion:
-            return (chunk.choices[0].delta)
-        """
-        return (completion.choices[0].message.content)
+            delta = chunk.choices[0].delta
+            finish_reason = chunk.choices[0].finish_reason
+
+            if delta.content:
+                respuesta += delta.content
+                print(respuesta)
+                yield json.dumps({"content": delta.content}) + "\n"
+            if finish_reason is not None:
+                yield json.dumps({"finish_reason" : finish_reason}) + "\n"
+                break
+
+        #return (completion.choices[0].message.content)
